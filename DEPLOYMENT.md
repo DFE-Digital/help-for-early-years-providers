@@ -4,6 +4,8 @@
 
 These environment variables affect how the app functions when deployed in production.
 
+- `BASIC_AUTH_USERNAME` - If this and `BASIC_AUTH_PASSWORD` are present, visitors must use these credentials to access the app
+- `BASIC_AUTH_PASSWORD`
 - `RAILS_DISABLE_SSL` - Disable HSTS and secure cookies
 - `RAILS_MAX_THREADS` - Number of threads per Puma process (default: 5)
 - **REQUIRED** `SECRET_KEY_BASE` - Unique, secret key used to encrypt and sign cookies and other sensitive data
