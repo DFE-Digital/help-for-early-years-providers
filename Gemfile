@@ -26,6 +26,7 @@ group :development do
 end
 
 group :test do
+  gem "capybara-lockstep"
   gem "selenium-webdriver"
   gem "capybara"
 end
