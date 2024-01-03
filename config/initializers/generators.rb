@@ -1,4 +1,6 @@
 Rails.application.config.generators do |g|
+# Generate "users_factory.rb" instead of "users.rb"
+g.factory_bot suffix: "factory"
   # Disable generators we don't need.
   g.javascripts false
   g.stylesheets false
