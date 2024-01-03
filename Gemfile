@@ -23,6 +23,7 @@ group :development, :test do
 end
 
 group :development do
+  gem "pgcli-rails"
   gem "erb_lint", require: false
   gem "bundler-audit", require: false
   gem "brakeman", require: false
