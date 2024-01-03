@@ -15,6 +15,7 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootsnap", require: false
 
 group :development, :test do
+  gem "launchy"
   gem "factory_bot_rails"
   gem "dotenv-rails"
   gem "rspec-rails"
