@@ -4,6 +4,7 @@
 
 These environment variables affect how the app functions when deployed in production.
 
+- `RAILS_HOSTNAME` - Redirect all requests to the specified canonical hostname
 - `BASIC_AUTH_USERNAME` - If this and `BASIC_AUTH_PASSWORD` are present, visitors must use these credentials to access the app
 - `BASIC_AUTH_PASSWORD`
 - `RAILS_DISABLE_SSL` - Disable HSTS and secure cookies

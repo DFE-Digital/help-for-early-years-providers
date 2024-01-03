@@ -2,6 +2,7 @@ source "https://rubygems.org"
 
 ruby "3.3.0"
 
+gem "rack-canonical-host"
 gem "good_migrations"
 gem "rails", "~> 7.1.2"
 gem "propshaft"
