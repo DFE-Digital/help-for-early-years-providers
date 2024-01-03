@@ -213,6 +213,8 @@ GEM
     rack-canonical-host (1.2.0)
       addressable (> 0, < 3)
       rack (>= 1, < 4)
+    rack-mini-profiler (3.3.0)
+      rack (>= 1.2.0)
     rack-session (2.0.0)
       rack (>= 3.0.0)
     rack-test (2.1.0)
@@ -346,6 +348,7 @@ DEPENDENCIES
   propshaft
   puma (>= 5.0)
   rack-canonical-host
+  rack-mini-profiler
   rails (~> 7.1.2)
   rspec-rails
   selenium-webdriver

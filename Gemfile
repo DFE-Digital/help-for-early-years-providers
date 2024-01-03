@@ -24,6 +24,7 @@ group :development, :test do
 end
 
 group :development do
+  gem "rack-mini-profiler"
   gem "pgcli-rails"
   gem "erb_lint", require: false
   gem "bundler-audit", require: false
