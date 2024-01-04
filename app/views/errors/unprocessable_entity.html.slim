@@ -1,0 +1,16 @@
+= content_for :page_title, 'Sorry, there’s a problem with the service'
+.govuk-grid-row
+  .govuk-grid-column-two-thirds
+    h1.govuk-heading-l
+      | Sorry, there’s a problem with the service
+    p.govuk-body
+      | Try again later.
+    p.govuk-body
+      |  If you continue to see this error contact the 
+      = t('service.name')
+      |  team: <a class="govuk-link" href="mailto:
+      = t('service.email')
+      | ">
+      =
+      -       t('service.email')
+      | . 

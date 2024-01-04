@@ -15,6 +15,8 @@ gem "rails", "~> 7.1.2"
 gem "stimulus-rails"
 gem "turbo-rails"
 gem "tzinfo-data", platforms: %i[windows jruby]
+gem "govuk-components"
+gem "govuk_design_system_formbuilder"
 
 group :development, :test do
   gem "debug", platforms: %i[mri windows]
@@ -25,6 +27,10 @@ group :development, :test do
 end
 
 group :development do
+  gem 'rladr'
+  gem 'annotate', require: false
+  gem 'solargraph', require: false
+  gem 'solargraph-rails', require: false
   gem "annotate"
   gem "brakeman", require: false
   gem "bundler-audit", require: false

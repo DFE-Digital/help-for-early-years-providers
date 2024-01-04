@@ -1,0 +1,15 @@
+= content_for :page_title, "Sorry, there’s a problem with the service"
+.govuk-grid-row
+  .govuk-grid-column-two-thirds
+    h1.govuk-heading-l
+      | Sorry, there’s a problem with the service
+    p.govuk-body
+      | Try again later.
+    p.govuk-body
+      |  If you reached this page after submitting information then it has not been saved. You’ll need to enter it again when the service is available. 
+    p.govuk-body
+      |  If you have any questions, please email us at <a class="govuk-link" href="mailto:
+      = t('service.email')
+      | ">
+      = t('service.email')
+      | . 

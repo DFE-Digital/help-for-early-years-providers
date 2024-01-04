@@ -1,7 +1,8 @@
 # See https://docs.docker.com/engine/reference/builder/#dockerignore-file for more about ignoring files.
 
-# Ignore git directory.
+# Ignore git and github directory.
 /.git/
+/.github/
 
 # Ignore bundler config.
 /.bundle
@@ -19,6 +20,8 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
+*.log
+.byebug_history
 
 # Ignore pidfiles, but keep the directory.
 /tmp/pids/*
@@ -35,3 +38,7 @@
 /app/assets/builds/*
 !/app/assets/builds/.keep
 /public/assets
+
+.yarn-integrity
+vendor/cache
+yarn-debug.log*

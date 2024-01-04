@@ -1,3 +1,8 @@
-- provide(:title, "Home")
-p
-  | Find me in app/views/home/index.html.slim
+- provide(:page_title, "Home")
+.govuk-grid-row
+  .govuk-grid-column-two-thirds
+    h1.govuk-heading-xl
+      | It works! 🎉
+    p.govuk-body
+      |  Your application is ready - so long as this page rendered without any errors you're good to go. 
+    = govuk_summary_list(rows: [{ key: { text: "Rails version" }, value: { text:  Rails.version } },{ key: { text: "Ruby version" }, value: { text:  RUBY_VERSION } },  { key: {text: "GOV.UK Frontend" }, value: {text: JSON.parse(File.read(Rails.root.join("package.json"))).dig("dependencies", "govuk-frontend").tr("^", "")}}])
