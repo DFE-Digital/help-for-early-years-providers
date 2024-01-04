@@ -1,0 +1,14 @@
+doctype html
+html lang="en" 
+  head 
+    = capybara_lockstep if defined?(Capybara::Lockstep)
+    title
+      = content_for(:title) ? strip_tags(yield(:title)) : "Help for Early Years Providers"
+      meta[name="apple-mobile-web-app-title" content="Help For Early Years Providers"]
+    meta[name="viewport" content="width=device-width,initial-scale=1"]
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag "application", "data-turbo-track": "reload"
+    = javascript_include_tag "application", "data-turbo-track": "reload", defer: true
+  body
+    = yield

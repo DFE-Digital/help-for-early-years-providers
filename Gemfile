@@ -6,6 +6,7 @@ gem "bootsnap", require: false
 gem "cssbundling-rails"
 gem "good_migrations"
 gem "jsbundling-rails"
+gem "slim-rails", "~> 3.6"
 gem "pg", "~> 1.1"
 gem "propshaft"
 gem "puma", ">= 5.0"
