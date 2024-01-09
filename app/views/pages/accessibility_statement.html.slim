@@ -1,0 +1,3 @@
+- content_for :page_title do t(params[:action], default: params[:action].humanize, scope: params[:controller].parameterize) end
+
+= translate_markdown(t('accessibility.html'))
