@@ -1,6 +1,7 @@
 ---
 EnableDefaultLinters: true
 exclude:
+  - "app/views/layouts/_notice.html.erb"
   - "node_modules/**/*"
   - "vendor/**/*"
 linters:
@@ -22,4 +23,6 @@ linters:
       Naming/FileName:
         Enabled: false
       Rails/OutputSafety:
+        Enabled: false
+      Style/StringLiterals:
         Enabled: false

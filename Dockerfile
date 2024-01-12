@@ -1,75 +1,83 @@
-# syntax = docker/dockerfile:1
+# ------------------------------------------------------------------------------
+# Base - AMD64 & ARM64 compatible
+# ------------------------------------------------------------------------------
+FROM ruby:3.2.2-alpine as base
 
-# Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
-ARG RUBY_VERSION=3.3.0
-FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
+RUN apk add --no-cache --no-progress --no-check-certificate build-base less curl tzdata gcompat
 
-# Rails app lives here
-WORKDIR /rails
+ENV TZ Europe/London
 
-# Set production environment
-ENV RAILS_ENV="production" \
-    BUNDLE_DEPLOYMENT="1" \
-    BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development"
+# ------------------------------------------------------------------------------
+# Dependencies
+# ------------------------------------------------------------------------------
+FROM base as deps
 
+LABEL org.opencontainers.image.description "Application Dependencies"
 
-# Throw-away build stage to reduce size of final image
-FROM base as build
+RUN apk add --no-cache --no-progress --no-check-certificate postgresql-dev yarn
 
-# Install packages needed to build gems and node modules
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential curl git libpq-dev node-gyp pkg-config python-is-python3
+ENV APP_HOME /build
 
-# Install JavaScript dependencies
-ARG NODE_VERSION=21.5.0
-ARG YARN_VERSION=1.22.19
-ENV PATH=/usr/local/node/bin:$PATH
-RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
-    /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
-    npm install -g yarn@$YARN_VERSION && \
-    rm -rf /tmp/node-build-master
+WORKDIR ${APP_HOME}
 
-# Install application gems
-COPY Gemfile Gemfile.lock ./
-RUN bundle install && \
-    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
-    bundle exec bootsnap precompile --gemfile
+COPY package.json ${APP_HOME}/package.json
+COPY yarn.lock ${APP_HOME}/yarn.lock
+COPY .yarn ${APP_HOME}/.yarn
+COPY .yarnrc.yml ${APP_HOME}/.yarnrc.yml
 
-# Install node modules
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+RUN yarn install
 
-# Copy application code
-COPY . .
+COPY Gemfile* ./
 
-# Precompile bootsnap code for faster boot times
-RUN bundle exec bootsnap precompile app/ lib/
+RUN bundle config set no-cache true
+RUN bundle config set without development test
+RUN bundle install --no-binstubs --retry=10 --jobs=4
 
-# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+# ------------------------------------------------------------------------------
+# Production Stage
+# ------------------------------------------------------------------------------
+FROM base AS app
 
+LABEL org.opencontainers.image.source=https://github.com/DFE-Digital/help-for-early-years-providers
+LABEL org.opencontainers.image.description "Help for Early Years Providers"
 
-# Final stage for app image
-FROM base
+RUN echo "Welcome to the EYFS Help for Early Years Providers Application" > /etc/motd
+RUN apk add --no-cache --no-progress --no-check-certificate postgresql-dev yarn openssh
+RUN echo "root:Docker!" | chpasswd && cd /etc/ssh/ && ssh-keygen -A
 
-# Install packages needed for deployment
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl postgresql-client && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+ENV APP_HOME /srv
+ENV RAILS_ENV ${RAILS_ENV:-production} \
+  GOVUK_APP_DOMAIN www.gov.uk
 
-# Copy built artifacts: gems, application
-COPY --from=build /usr/local/bundle /usr/local/bundle
-COPY --from=build /rails /rails
+RUN mkdir -p ${APP_HOME}/tmp/pids ${APP_HOME}/log
 
-# Run and own only the runtime files as a non-root user for security
-RUN useradd rails --create-home --shell /bin/bash && \
-    chown -R rails:rails db log tmp
-USER rails:rails
+WORKDIR ${APP_HOME}
 
-# Entrypoint prepares the database.
-ENTRYPOINT ["/rails/bin/docker-entrypoint"]
+COPY Gemfile* ./
+COPY --from=deps /usr/local/bundle /usr/local/bundle
 
-# Start the server by default, this can be overwritten at runtime
+COPY config.ru ${APP_HOME}/config.ru
+COPY Rakefile ${APP_HOME}/Rakefile
+COPY public ${APP_HOME}/public
+COPY bin ${APP_HOME}/bin
+COPY lib ${APP_HOME}/lib
+COPY config ${APP_HOME}/config
+COPY db ${APP_HOME}/db
+COPY app ${APP_HOME}/app
+
+COPY package.json ${APP_HOME}/package.json
+COPY yarn.lock ${APP_HOME}/yarn.lock
+COPY .yarnrc.yml ${APP_HOME}/.yarnrc.yml
+COPY --from=deps /build/.yarn ${APP_HOME}/.yarn
+COPY --from=deps /build/node_modules ${APP_HOME}/node_modules
+
+RUN SECRET_KEY_BASE=x ./bin/rails assets:precompile
+
+COPY sshd_config /etc/ssh/
+COPY ./bin/docker-entrypoint /
+
+ENTRYPOINT ["docker-entrypoint"]
+
 EXPOSE 3000
-CMD ["./bin/rails", "server"]
+
+CMD ["bin/rails", "server"]

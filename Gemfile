@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '3.3.0'
+ruby '3.2.2'
 
 gem 'acts_as_tree', '~> 2.9'
 gem 'bootsnap', require: false

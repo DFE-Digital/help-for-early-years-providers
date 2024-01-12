@@ -157,6 +157,8 @@ GEM
       activerecord (>= 3.1)
       railties (>= 3.1)
     google-protobuf (3.25.1)
+    google-protobuf (3.25.1-aarch64-linux)
+    google-protobuf (3.25.1-x86_64-linux)
     googleapis-common-protos-types (1.11.0)
       google-protobuf (~> 3.18)
     govspeak (8.3.2)
@@ -729,7 +731,7 @@ DEPENDENCIES
   web-console
 
 RUBY VERSION
-   ruby 3.3.0p0
+   ruby 3.2.2p53
 
 BUNDLED WITH
    2.5.3

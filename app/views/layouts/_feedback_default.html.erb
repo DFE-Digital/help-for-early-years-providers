@@ -7,12 +7,12 @@
         <li class="gem-c-feedback__option-list-item">
           <%= button_to(
                 feedbacks_path,
-                params: {"feedback[page_useful]" => "yes"},
+                params: { "feedback[page_useful]" => "yes" },
                 class: "govuk-button gem-c-feedback__prompt-link",
                 data: {
                   track_category: "yesNoFeedbackForm",
-                  track_action: "ffYesClick"
-                }
+                  track_action: "ffYesClick",
+                },
               ) do %>
             Yes <span class="govuk-visually-hidden">this page is useful</span>
           <% end %>
@@ -20,12 +20,12 @@
         <li class="gem-c-feedback__option-list-item">
           <%= button_to(
                 feedbacks_path,
-                params: {"feedback[page_useful]" => "no"},
+                params: { "feedback[page_useful]" => "no" },
                 class: "govuk-button gem-c-feedback__prompt-link",
                 data: {
                   track_category: "yesNoFeedbackForm",
-                  track_action: "ffNoClick"
-                }
+                  track_action: "ffNoClick",
+                },
               ) do %>
             No <span class="govuk-visually-hidden">this page is not useful</span>
           <% end %>
