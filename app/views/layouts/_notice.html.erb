@@ -1,0 +1,9 @@
+<%- if notice %>
+  <div class='govuk-success-summary banner-with-tick' aria-labelledby='success-message' data-qa='success-message' tabindex="-1" role='alert'>
+    <div class='govuk-success-summary__title'>
+    </div>
+    <h2 id='success-message' class='govuk-heading-m'>
+      <%= notice.html_safe %>
+    </h2>
+  </div>
+<% end %>

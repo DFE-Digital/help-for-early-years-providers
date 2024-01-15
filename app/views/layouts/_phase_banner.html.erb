@@ -1,0 +1,6 @@
+<%- flink = govuk_link_to("feedback", Rails.configuration.feedback_url, target: "_blank", rel: "noopener noreferrer") %>
+<aside class='govuk-width-container' title='Beta Banner'>
+  <%= govuk_phase_banner(tag: { text: "Beta" }, classes: "noprint") do %>
+    <%= t("phase_banner.html", feedback_link: flink) %>
+  <% end %>
+</aside>

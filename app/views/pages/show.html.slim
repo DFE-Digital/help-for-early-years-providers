@@ -1,0 +1,14 @@
+- if @page.parent
+  span.govuk-caption-l
+    = @page.parent.title
+h1.govuk-heading-l
+  = @page.title
+= translate_markdown(@page.intro)
+- unless @page.content_list.blank?
+  p#contents-list-heading.govuk-body class='govuk-!-margin-bottom-1'
+    |  Contents 
+  = translate_markdown(@page.content_list)
+- if @page.content_list
+  = print_button("govuk-!-margin-top-7")
+div class='govuk-!-margin-top-4'
+  = translate_markdown(@page.markdown)

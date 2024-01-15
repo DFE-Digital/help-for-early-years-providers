@@ -10,8 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 0) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_04_145643) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "content_pages", force: :cascade do |t|
+    t.string "slug"
+    t.string "title"
+    t.string "intro"
+    t.string "content_list"
+    t.string "markdown"
+    t.string "author"
+    t.string "description"
+    t.integer "parent_id"
+    t.integer "previous_id"
+    t.integer "next_id"
+    t.integer "position"
+    t.boolean "is_published", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["position", "parent_id"], name: "index_content_pages_on_position_and_parent_id", unique: true
+    t.index ["title"], name: "index_content_pages_on_title", unique: true
+  end
 
 end

@@ -32,6 +32,7 @@ jobs:
           node-version-file: ".node-version"
           cache: yarn
       - run: npx --yes ci
+      - run: bundle exec rails assets:precompile
       - run: mkdir -p ./tmp/screenshots
       - run: bundle exec rake db:prepare
       - run: bundle exec rspec

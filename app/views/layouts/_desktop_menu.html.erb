@@ -1,0 +1,18 @@
+<nav role="navigation" class="app-subnav">
+  <% ContentPage.published.top_level.order_by_position.each do |top_level_page| %>
+    <%- current_top_level = page_current?(top_level_page) ? "app-subnav__section-item--current" : "" %>
+    <%- classes = %i[govuk-link app-subnav__link govuk-link--no-visited-state] %>
+    <%= govuk_link_to(path_for_this_page(top_level_page), class: [classes, current_top_level].join) do %>
+      <p class="app-subnav__theme"><%= top_level_page.title %></p>
+    <% end %>
+    <ul class="app-subnav__section ">
+      <% top_level_page.children.published.order_by_position.each do |child| %>
+        <%- current_child = page_current?(child) ? "app-subnav__section-item--current" : "" %>
+        <%- item_classes = "app-subnav__section-item #{current_child}" %>
+        <%= tag.li(class: item_classes) do %>
+          <%= govuk_link_to(child.title, path_for_this_page(child), class: classes) %>
+        <% end %>
+      <% end %>
+    </ul>
+  <% end %>
+</nav>
